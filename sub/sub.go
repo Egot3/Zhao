@@ -6,7 +6,7 @@ import (
 
 // Subscriber's channel(nfrvr)
 type Subscriber struct {
-	ch *amqp.Channel
+	Ch *amqp.Channel
 }
 
 // Create a freshly-baked subscriber(don't play god too much, those may be
@@ -18,13 +18,13 @@ func NewSubscriber(conn *amqp.Connection) (*Subscriber, error) {
 	}
 
 	return &Subscriber{
-		ch: ch,
+		Ch: ch,
 	}, nil
 }
 
 // Returns a function which takes in a chan, that should be placed in goroutine
 func (s *Subscriber) StartSubscriberFunc(queue, consumer string, autoAck, exclusive, noLocal, noWait bool, args amqp.Table) (func(chan any), error) {
-	msgs, err := s.ch.Consume(
+	msgs, err := s.Ch.Consume(
 		queue,
 		consumer,
 		autoAck,
@@ -47,5 +47,5 @@ func (s *Subscriber) StartSubscriberFunc(queue, consumer string, autoAck, exclus
 
 // Function to make consumer stop consuming early
 func (s *Subscriber) Close() error {
-	return s.ch.Close()
+	return s.Ch.Close()
 }
