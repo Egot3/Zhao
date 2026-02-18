@@ -8,7 +8,7 @@ import (
 
 // Publisher's channel(for now)
 type Publisher struct {
-	ch *amqp.Channel
+	Ch *amqp.Channel
 }
 
 // Create New publisher from connection(No way, right?) it should be defered btw
@@ -19,13 +19,13 @@ func NewPublisher(conn *amqp.Connection) (*Publisher, error) {
 	}
 
 	return &Publisher{
-		ch: pub,
+		Ch: pub,
 	}, nil
 }
 
 // Publishes whatever you want wherever you want
 func (p *Publisher) Publish(ctx context.Context, exchange, key string, mandatory, immediate bool, msg amqp.Publishing) error {
-	err := p.ch.Publish(
+	err := p.Ch.Publish(
 		exchange,
 		key,
 		mandatory,
@@ -37,5 +37,5 @@ func (p *Publisher) Publish(ctx context.Context, exchange, key string, mandatory
 
 // Want to close publisher early? That's for you
 func (p *Publisher) Close() error {
-	return p.ch.Close()
+	return p.Ch.Close()
 }
