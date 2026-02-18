@@ -25,7 +25,8 @@ func NewPublisher(conn *amqp.Connection) (*Publisher, error) {
 
 // Publishes whatever you want wherever you want
 func (p *Publisher) Publish(ctx context.Context, exchange, key string, mandatory, immediate bool, msg amqp.Publishing) error {
-	err := p.Ch.Publish(
+	err := p.Ch.PublishWithContext(
+		ctx,
 		exchange,
 		key,
 		mandatory,
