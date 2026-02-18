@@ -18,8 +18,5 @@ func Connect(cfg RabbitMQConfiguration) (*amqp.Connection, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	defer conn.Close()
-
 	return conn, nil
 }
