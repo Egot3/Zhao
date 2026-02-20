@@ -3,23 +3,28 @@ package pub
 import (
 	"context"
 
+	"github.com/Egot3/Zhao/bindings"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 // Publisher's channel(for now)
 type Publisher struct {
-	Ch *amqp.Channel
+	bindings.PubSubChannel
 }
 
 // Create New publisher from connection(No way, right?) it should be defered btw
 func NewPublisher(conn *amqp.Connection) (*Publisher, error) {
-	pub, err := conn.Channel()
+	ch, err := conn.Channel()
 	if err != nil {
 		return nil, err
 	}
 
+	psch := bindings.PubSubChannel{
+		Ch: ch,
+	}
+
 	return &Publisher{
-		Ch: pub,
+		PubSubChannel: psch,
 	}, nil
 }
 

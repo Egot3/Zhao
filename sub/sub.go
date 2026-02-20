@@ -1,12 +1,13 @@
 package sub
 
 import (
+	"github.com/Egot3/Zhao/bindings"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 // Subscriber's channel(nfrvr)
 type Subscriber struct {
-	Ch *amqp.Channel
+	bindings.PubSubChannel
 }
 
 // Create a freshly-baked subscriber(don't play god too much, those may be
@@ -17,8 +18,12 @@ func NewSubscriber(conn *amqp.Connection) (*Subscriber, error) {
 		return nil, err
 	}
 
-	return &Subscriber{
+	psch := bindings.PubSubChannel{
 		Ch: ch,
+	}
+
+	return &Subscriber{
+		PubSubChannel: psch,
 	}, nil
 }
 
