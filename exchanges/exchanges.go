@@ -16,7 +16,7 @@ type ExchangeStruct struct {
 }
 
 // Translates your Exchange from readable struct to Exchange(factual)
-func NewQueue(ch *amqp.Channel, e ExchangeStruct) error { //FACTORY MUST GROW
+func NewExchange(ch *amqp.Channel, e ExchangeStruct) error { //FACTORY MUST GROW
 	err := ch.ExchangeDeclare(
 		e.Name,
 		e.Type,
