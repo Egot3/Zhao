@@ -16,12 +16,21 @@ type BindingStruct struct {
 	RoutingKey string
 }
 
-func (psch *PubSubChannel) NewBinding(b *BindingStruct) error {
+func (psch *PubSubChannel) Bind(b *BindingStruct) error {
 	return psch.Ch.QueueBind(
 		b.Queue.Name,
 		b.RoutingKey,
 		b.Exchange.Name,
 		false,
+		nil,
+	)
+}
+
+func (pschn *PubSubChannel) Unbind(b *BindingStruct) error {
+	return pschn.Ch.QueueUnbind(
+		b.Queue.Name,
+		b.RoutingKey,
+		b.Exchange.Name,
 		nil,
 	)
 }
