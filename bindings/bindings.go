@@ -34,3 +34,7 @@ func (psch PubSubChannel) Unbind(b *BindingStruct) error {
 		nil,
 	)
 }
+
+func (psch PubSubChannel) Alive() bool {
+	return psch.Ch.IsClosed()
+}
