@@ -32,6 +32,7 @@ func NewQueue(ch *amqp.Channel, q QueueStruct) (*amqp.Queue, error) { //FACTORY 
 	return &queue, nil
 }
 
+// Deletes a queue, duh
 func DeleteQueue(ch *amqp.Channel, q QueueStruct) error {
 	_, err := ch.QueuePurge(q.Name, q.NoWait)
 	return err

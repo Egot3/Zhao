@@ -16,7 +16,7 @@ type BindingStruct struct {
 	RoutingKey string
 }
 
-func (psch *PubSubChannel) Bind(b *BindingStruct) error {
+func (psch PubSubChannel) Bind(b *BindingStruct) error {
 	return psch.Ch.QueueBind(
 		b.Queue.Name,
 		b.RoutingKey,
@@ -26,8 +26,8 @@ func (psch *PubSubChannel) Bind(b *BindingStruct) error {
 	)
 }
 
-func (pschn *PubSubChannel) Unbind(b *BindingStruct) error {
-	return pschn.Ch.QueueUnbind(
+func (psch PubSubChannel) Unbind(b *BindingStruct) error {
+	return psch.Ch.QueueUnbind(
 		b.Queue.Name,
 		b.RoutingKey,
 		b.Exchange.Name,

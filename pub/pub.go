@@ -12,6 +12,14 @@ type Publisher struct {
 	bindings.PubSubChannel
 }
 
+type PublishingPackage struct {
+	Exchange  string
+	Key       string
+	Mandatory bool
+	Immediate bool
+	Message   amqp.Publishing
+}
+
 // Create New publisher from connection(No way, right?) it should be defered btw
 func NewPublisher(conn *amqp.Connection) (*Publisher, error) {
 	ch, err := conn.Channel()
@@ -29,14 +37,14 @@ func NewPublisher(conn *amqp.Connection) (*Publisher, error) {
 }
 
 // Publishes whatever you want wherever you want
-func (p *Publisher) Publish(ctx context.Context, exchange, key string, mandatory, immediate bool, msg amqp.Publishing) error {
+func (p *Publisher) Publish(ctx context.Context, pack PublishingPackage) error {
 	err := p.Ch.PublishWithContext(
 		ctx,
-		exchange,
-		key,
-		mandatory,
-		immediate,
-		msg,
+		pack.Exchange,
+		pack.Key,
+		pack.Mandatory,
+		pack.Immediate,
+		pack.Message,
 	)
 	return err
 }
