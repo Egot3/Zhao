@@ -3,6 +3,7 @@ package diacon
 import (
 	"fmt"
 
+	"github.com/Egot3/Zhao/bindings"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -12,11 +13,28 @@ type RabbitMQConfiguration struct {
 	Port string //Port(string) w/o :
 }
 
+type Connection struct {
+	amqp.Connection
+	channel bindings.PubSubChannel
+}
+
 // Get a connection for given configuration(will be passed to pubs and subs)
-func Connect(cfg RabbitMQConfiguration) (*amqp.Connection, error) {
+func Connect(cfg RabbitMQConfiguration) (*Connection, error) {
 	conn, err := amqp.Dial(fmt.Sprintf("%v:%v/", cfg.URL, cfg.Port))
 	if err != nil {
 		return nil, err
 	}
-	return conn, nil
+	ch, err := conn.Channel()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Connection{
+		*conn,
+		bindings.PubSubChannel{Ch: ch},
+	}, nil
+}
+
+func (c *Connection) Channel() *bindings.PubSubChannel {
+	return &c.channel
 }
