@@ -1,8 +1,6 @@
 package bindings
 
 import (
-	"github.com/Egot3/Zhao/exchanges"
-	"github.com/Egot3/Zhao/queues"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -11,16 +9,16 @@ type PubSubChannel struct {
 }
 
 type BindingStruct struct {
-	Queue      queues.QueueStruct
-	Exchange   exchanges.ExchangeStruct
-	RoutingKey string
+	QueueName    string
+	ExchangeName string
+	RoutingKey   string
 }
 
 func (psch PubSubChannel) Bind(b *BindingStruct) error {
 	return psch.Ch.QueueBind(
-		b.Queue.Name,
+		b.QueueName,
 		b.RoutingKey,
-		b.Exchange.Name,
+		b.ExchangeName,
 		false,
 		nil,
 	)
@@ -28,9 +26,9 @@ func (psch PubSubChannel) Bind(b *BindingStruct) error {
 
 func (psch PubSubChannel) Unbind(b *BindingStruct) error {
 	return psch.Ch.QueueUnbind(
-		b.Queue.Name,
+		b.QueueName,
 		b.RoutingKey,
-		b.Exchange.Name,
+		b.ExchangeName,
 		nil,
 	)
 }
